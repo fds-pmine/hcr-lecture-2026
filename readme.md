@@ -6,6 +6,8 @@ Professor - Aquil Mirza Mohammed
 
 Mentors - Haozhe Ruan, Suyu Jiang, Jiuyuan Zhao 
 
+Code Repo: https://github.com/fds-pmine/hcr-simulator 
+
 If you identify any issues in slides/codes please write an issue directly or contact us. 
 
 # Lecture Recording 
