@@ -19,17 +19,17 @@ If you identify any issues in slides/codes please write an issue directly or con
 | 3 | Structs & Enums | | |
 | 4 | Hotaru Web Framework | https://youtu.be/nNrT2yG__1s | |
 | 5 | Topic-Isomorphic Bus | | |
-| 6 | Sandbox, Safety-Aware Scheduling | https://youtu.be/72YWlt2JyjI | |
+| 6 | Sandbox, Safety-Aware Scheduling | https://youtu.be/72YWlt2JyjI | | 
 
 ### 2026.06.03 Project 1 is released
 
 Group Formation: https://docs.google.com/spreadsheets/d/1_p7eN9kytJtAjoKHwW6fTqScimzdNQIQ-qgAc9gotPc/edit?usp=sharing
 
-# Project 1 — Group Assignments
+# Project 1: Group Assignments
 
 Each group writes **one book chapter** plus the matching implementation slice. Find your group number in the table below, then follow the "Where to find exact things" guide underneath to locate every document and section you will need.
 
-## Group → Topic → Chapter Title
+## Group, Topic, Chapter Title
 
 | Group | Topic Code | Track | Twin-Pair Group | Chapter # | Chapter Title (what your team writes) |
 | :---: | :---: | :--- | :---: | :---: | :--- |

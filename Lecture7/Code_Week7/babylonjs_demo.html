@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>HCR Babylon.js demo</title>
+<style>
+  html, body { margin: 0; height: 100%; overflow: hidden; background: #111; color: #eee; font-family: sans-serif; }
+  #c { width: 100%; height: 100%; touch-action: none; display: block; }
+  #hud { position: fixed; top: 8px; left: 12px; font-size: 13px; opacity: 0.85; pointer-events: none; }
+</style>
+</head>
+<body>
+<div id="hud">Babylon.js: arc-rotate camera + hemispheric light + ellipsoid head. Drag to orbit.</div>
+<canvas id="c"></canvas>
+<script src="https://cdn.babylonjs.com/babylon.js"></script>
+<script>
+  const canvas = document.getElementById("c");
+  const engine = new BABYLON.Engine(canvas, true, { adaptToDeviceRatio: true });
+
+  const scene = new BABYLON.Scene(engine);
+  scene.clearColor = new BABYLON.Color4(0.07, 0.07, 0.07, 1);
+
+  // Camera that orbits around the head when the user drags.
+  const cam = new BABYLON.ArcRotateCamera(
+    "cam", -Math.PI / 2, Math.PI / 2.4, 6, new BABYLON.Vector3(0, 0.5, 0), scene,
+  );
+  cam.attachControl(canvas, true);
+  cam.wheelPrecision = 40;
+
+  // Soft ambient light from above.
+  new BABYLON.HemisphericLight("h", new BABYLON.Vector3(0, 1, 0), scene);
+
+  // Head as an ellipsoid: unit sphere scaled by per-axis radii.
+  const head = BABYLON.MeshBuilder.CreateSphere("head", { diameter: 2, segments: 32 }, scene);
+  head.scaling = new BABYLON.Vector3(0.9, 1.1, 0.95);
+  head.position.y = 0.5;
+  const headMat = new BABYLON.StandardMaterial("headMat", scene);
+  headMat.diffuseColor = new BABYLON.Color3(0.94, 0.78, 0.66);
+  head.material = headMat;
+
+  // A few "hair" line segments pointing along the outward ellipsoid normal.
+  const radii = new BABYLON.Vector3(0.9, 1.1, 0.95);
+  const hairLength = 0.25;
+  for (let i = 0; i < 180; i++) {
+    const u = Math.random() * 2 - 1;
+    const phi = Math.random() * Math.PI * 2;
+    const s = Math.sqrt(1 - u * u);
+    if (u < -0.1) continue;
+    const surface = new BABYLON.Vector3(
+      s * Math.cos(phi) * radii.x,
+      u * radii.y,
+      s * Math.sin(phi) * radii.z,
+    );
+    const normal = new BABYLON.Vector3(
+      surface.x / (radii.x * radii.x),
+      surface.y / (radii.y * radii.y),
+      surface.z / (radii.z * radii.z),
+    ).normalize();
+    const tip = surface.add(normal.scale(hairLength));
+    const line = BABYLON.MeshBuilder.CreateLines(
+      "hair" + i,
+      { points: [surface.add(new BABYLON.Vector3(0, 0.5, 0)), tip.add(new BABYLON.Vector3(0, 0.5, 0))] },
+      scene,
+    );
+    line.color = new BABYLON.Color3(0.13, 0.13, 0.13);
+  }
+
+  // Ground disc for context.
+  const floor = BABYLON.MeshBuilder.CreateDisc("floor", { radius: 3, tessellation: 48 }, scene);
+  floor.rotation.x = Math.PI / 2;
+  floor.position.y = -0.8;
+  const floorMat = new BABYLON.StandardMaterial("floorMat", scene);
+  floorMat.diffuseColor = new BABYLON.Color3(0.2, 0.2, 0.2);
+  floor.material = floorMat;
+
+  engine.runRenderLoop(() => scene.render());
+  window.addEventListener("resize", () => engine.resize());
+</script>
+</body>
+</html>
